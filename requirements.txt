@@ -1,0 +1,11 @@
+pytest
+flask
+sqlalchemy
+pydantic
+pytest-mock
+requests
+passlib
+jinja2
+loguru
+pillow
+alembic
