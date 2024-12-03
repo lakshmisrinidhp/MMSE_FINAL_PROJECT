@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Production Manager Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { color: #333; }
+        .container { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-top: 10px; }
+        select, input[type="text"], button { padding: 8px; margin-top: 5px; width: 100%; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 10px; border: 1px solid #ddd; }
+        th { background-color: #f4f4f4; }
+    </style>
+</head>
+<body>
+    <h2>Production Manager Dashboard</h2>
+
+    <!-- View Assigned Tasks -->
+    <div class="container">
+        <h3>Assigned Tasks</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task Description</th>
+                    <th>Deadline</th>
+                    <th>Assigned Team</th>
+                    <th>Status</th>
+                    <th>Update Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.deadline }}</td>
+                        <td>{{ task.assigned_team }}</td>
+                        <td>{{ task.status }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('update_task_status_pm') }}">
+                                <input type="hidden" name="task_description" value="{{ task.description }}">
+                                <select name="new_status" required>
+                                    <option value="Not Started">Not Started</option>
+                                    <option value="Ongoing">Ongoing</option>
+                                    <option value="Completed">Completed</option>
+                                </select>
+                                <button type="submit">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- View Recruitment Requests -->
+    <div class="container">
+        <h3>Recruitment Requests</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Urgency</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in recruitment_requests %}
+                    <tr>
+                        <td>{{ request.position }}</td>
+                        <td>{{ request.urgency }}</td>
+                        <td>{{ request.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>

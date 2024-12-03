@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subteam Leader Dashboard</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+        td {
+            font-size: 14px;
+        }
+        /* Form styling */
+        .form-group {
+            margin-top: 20px;
+        }
+        .button {
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .button:hover {
+            background-color: #27ae60;
+        }
+        .logout {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .logout:hover {
+            background-color: #c0392b;
+        }
+        .status-select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Subteam Leader Dashboard</h2>
+
+    {% if tasks %}
+        <table>
+            <tr>
+                <th>Task Description</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Update Status</th>
+            </tr>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.description }}</td>
+                <td>{{ task.deadline }}</td>
+                <td>{{ task.status }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('update_task_status') }}">
+                        <input type="hidden" name="task_description" value="{{ task.description }}">
+                        <select name="new_status" class="status-select" required>
+                            <option value="Not Started" {% if task.status == "Not Started" %}selected{% endif %}>Not Started</option>
+                            <option value="Ongoing" {% if task.status == "Ongoing" %}selected{% endif %}>Ongoing</option>
+                            <option value="Completed" {% if task.status == "Completed" %}selected{% endif %}>Completed</option>
+                        </select>
+                        <button type="submit" class="button">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No tasks assigned yet.</p>
+    {% endif %}
+
+    <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+</body>
+</html>
